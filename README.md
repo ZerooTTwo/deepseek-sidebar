@@ -1,4 +1,4 @@
-﻿# DeepSeek Sidebar · DeepSeek 侧边栏助手
+# DeepSeek Sidebar · DeepSeek 侧边栏助手
 
 在浏览器右侧边栏直接使用 **DeepSeek 官方网页版**（`chat.deepseek.com`），
 不切换标签页、不离开当前页面；另外支持在任意网页上**划词翻译**。
@@ -113,6 +113,7 @@ POST /api/v0/chat/create_pow_challenge        // 必须先解一个 PoW 挑战
   `style-src` CSP 拦掉，在有严格 CSP 的站点上会直接消失
 - 在 `all_frames` 下运行，选区在 iframe 里时，浮窗就渲染在那个 iframe 里，坐标始终正确
 - 结果按「引擎+目标语言+原文」缓存，重复选中同一段文字是瞬时的
+- 不注入脚本到 DeepSeek 页面、不读取跨域 iframe 内容、不代理任何流量
 
 ---
 
@@ -177,39 +178,6 @@ PASS  upstream still sends frame-ancestors (rule is what unblocks it)
 
 这同时证明了一件事：如果只是简单地写一句 `<iframe src="https://chat.deepseek.com/">`，
 这里拿到的会是 `refused to connect`；真正让它生效的是 `rules/frame.json`。
-
----
-
-## 排错
-
-**侧边栏白屏或提示 "refused to connect"**
-打开设置页 → 看「运行状态」第一项「嵌入规则」是否为绿。
-若为红：到 `chrome://extensions` 点本扩展的刷新按钮重新加载。
-
-**修改了 `rules/frame.json` 不生效**
-静态规则集只在扩展加载/更新时读取，必须重新加载扩展。
-
-**侧边栏里要重新登录**
-侧边栏与普通标签页共享同一套 `deepseek.com` Cookie，通常无需重复登录。
-若无痕模式下两者隔离，属浏览器行为。
-
-**太窄导致排版拥挤**
-拖动侧边栏左侧边缘即可加宽（Chrome 会记住每个窗口的宽度）。
-也可以用工具条里的「在独立窗口打开」，获得一个 480×860 的独立窗口。
-
-**选中文字没有出现「译」按钮**
-先看设置页里「启用划词翻译」是否打开。另外 `chrome://` 开头页面、Chrome 应用商店、
-PDF 内嵌查看器和部分 `file://` 页面不允许注入内容脚本，这些地方不会有按钮。
-
-**浮窗提示「还没有配置翻译引擎」**
-在设置页填一个 DeepSeek API Key，或勾选「未配置 Key 时使用免费翻译接口」并保存。
-
-**免费接口报「单次上限约 500 字符」**
-这是该公共接口的限制，长段落在设置里配置 API Key 后即可翻译。
-
-**是否会看到或上传我的对话内容？**
-不会。扩展不注入任何脚本到 DeepSeek 页面、不读取 iframe 内容
-（跨域 iframe 本身也无法读取），不做任何网络代理。
 
 ---
 

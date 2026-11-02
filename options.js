@@ -41,10 +41,6 @@ const el = {
   toast: document.getElementById('toast'),
 };
 
-/* ------------------------------------------------------------------ *
- * Helpers
- * ------------------------------------------------------------------ */
-
 function normalize(raw) {
   try {
     const url = new URL(String(raw || '').trim());
@@ -93,10 +89,6 @@ function errorText(code, message) {
       return message || '翻译失败。';
   }
 }
-
-/* ------------------------------------------------------------------ *
- * Form <-> storage
- * ------------------------------------------------------------------ */
 
 function paint(url) {
   const preset = PRESET_URLS.includes(url);
@@ -161,17 +153,12 @@ async function persist() {
   await chrome.storage.local.set({ apiKey: el.apiKey.value.trim() });
 }
 
-/* ------------------------------------------------------------------ *
- * Diagnostics
- * ------------------------------------------------------------------ */
-
 function chromeMajor() {
   const match = navigator.userAgent.match(/Chrome\/(\d+)/);
   return match ? Number(match[1]) : 0;
 }
 
 async function runDiagnostics() {
-  // 1. Framing ruleset
   try {
     const enabled = await chrome.declarativeNetRequest.getEnabledRulesets();
     if (enabled.includes('ds_frame_headers')) {
@@ -183,7 +170,6 @@ async function runDiagnostics() {
     setCheck('rules', 'bad', '无法读取规则状态');
   }
 
-  // 2. Host permissions
   try {
     const granted = await chrome.permissions.contains({
       origins: ['*://*.deepseek.com/*'],
@@ -197,7 +183,6 @@ async function runDiagnostics() {
     setCheck('perm', 'warn', '无法检测');
   }
 
-  // 3. Translation engine
   try {
     const local = await chrome.storage.local.get({ apiKey: '' });
     const sync = await chrome.storage.sync.get(DEFAULTS);
@@ -212,14 +197,12 @@ async function runDiagnostics() {
     setCheck('engine', 'warn', '无法检测');
   }
 
-  // 4. Side panel API
   if (chrome.sidePanel && typeof chrome.sidePanel.open === 'function') {
     setCheck('panel', 'ok', '可用');
   } else {
     setCheck('panel', 'bad', '不可用 — 需要 Chrome 116+');
   }
 
-  // 5. Browser version
   const major = chromeMajor();
   if (major >= 116) {
     setCheck('browser', 'ok', `Chrome ${major}`);
@@ -229,10 +212,6 @@ async function runDiagnostics() {
     setCheck('browser', 'bad', major ? `Chrome ${major} 过低` : '非 Chrome 内核');
   }
 }
-
-/* ------------------------------------------------------------------ *
- * Events
- * ------------------------------------------------------------------ */
 
 for (const radio of el.radios) {
   radio.addEventListener('change', () => {
@@ -339,10 +318,6 @@ el.testTranslate.addEventListener('click', async () => {
     void runDiagnostics();
   }
 });
-
-/* ------------------------------------------------------------------ *
- * Boot
- * ------------------------------------------------------------------ */
 
 (async function boot() {
   el.version.textContent = chrome.runtime.getManifest().version;

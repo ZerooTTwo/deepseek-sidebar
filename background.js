@@ -21,10 +21,8 @@
  */
 
 const DEFAULT_SETTINGS = {
-  // side panel
   landingUrl: 'https://chat.deepseek.com/',
   showToolbar: true,
-  // 划词翻译
   translateEnabled: true,
   targetLang: 'auto',
   allowFreeEngine: false,
@@ -37,10 +35,6 @@ const DEEPSEEK_API = 'https://api.deepseek.com/chat/completions';
 const FREE_API = 'https://api.mymemory.translated.net/get';
 const MAX_TEXT_LEN = 2000;
 const FREE_MAX_CHARS = 480;
-
-/* ------------------------------------------------------------------ *
- * Panel behaviour
- * ------------------------------------------------------------------ */
 
 async function applyPanelBehavior() {
   try {
@@ -59,10 +53,6 @@ chrome.action.onClicked.addListener(async (tab) => {
     console.warn('[DeepSeek Sidebar] sidePanel.open failed:', err);
   }
 });
-
-/* ------------------------------------------------------------------ *
- * Context menus
- * ------------------------------------------------------------------ */
 
 function buildContextMenus() {
   chrome.contextMenus.removeAll(() => {
@@ -110,10 +100,6 @@ async function openStandaloneWindow() {
   });
 }
 
-/* ------------------------------------------------------------------ *
- * 划词翻译 — engine plumbing
- * ------------------------------------------------------------------ */
-
 const LANG_LABELS = {
   auto: '自动',
   'zh-CN': '简体中文',
@@ -139,7 +125,6 @@ const TARGET_NAMES = {
 
 const HAS_CJK = /[\u3400-\u4dbf\u4e00-\u9fff\uf900-\ufaff\u3040-\u30ff\uac00-\ud7af]/;
 
-/** Resolve 'auto' into a concrete target language. */
 function resolveTargetLang(text, pref) {
   if (pref && pref !== 'auto' && TARGET_NAMES[pref]) return pref;
   // Chinese/Japanese/Korean source -> English; anything else -> Chinese.
@@ -173,8 +158,6 @@ function cleanTranslation(raw) {
 
   return out.trim();
 }
-
-/* --------------------------- DeepSeek API ------------------------------ */
 
 async function translateWithDeepSeek(text, target, apiKey) {
   const maxTokens = Math.min(4096, Math.max(256, Math.ceil(text.length * 2.5) + 64));
@@ -227,8 +210,6 @@ async function translateWithDeepSeek(text, target, apiKey) {
   return { ok: true, translation: cleanTranslation(content), engine: 'deepseek', engineLabel: 'DeepSeek' };
 }
 
-/* ---------------------------- Free engine ------------------------------ */
-
 function freeSourceLang(text) {
   return HAS_CJK.test(text) ? 'zh-CN' : 'en';
 }
@@ -279,8 +260,6 @@ async function translateWithFree(text, target) {
 
   return { ok: true, translation: cleanTranslation(out), engine: 'free', engineLabel: '免费接口' };
 }
-
-/* ------------------------------ Dispatch ------------------------------- */
 
 /** Small session cache so re-selecting the same text is instant. */
 const translationCache = new Map();
@@ -333,10 +312,6 @@ async function handleTranslate(message) {
   return result;
 }
 
-/* ------------------------------------------------------------------ *
- * Messaging
- * ------------------------------------------------------------------ */
-
 chrome.runtime.onMessage.addListener((message, _sender, sendResponse) => {
   if (!message || typeof message.type !== 'string') return false;
 
@@ -380,10 +355,6 @@ chrome.runtime.onMessage.addListener((message, _sender, sendResponse) => {
       return false;
   }
 });
-
-/* ------------------------------------------------------------------ *
- * Lifecycle
- * ------------------------------------------------------------------ */
 
 chrome.runtime.onInstalled.addListener(async (details) => {
   const stored = await chrome.storage.sync.get(DEFAULT_SETTINGS);

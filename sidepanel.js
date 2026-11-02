@@ -39,10 +39,6 @@ let splashHidden = false;
 /** Optional message (e.g. a disabled ruleset) to keep on the splash. */
 let bootNotice = null;
 
-/* ------------------------------------------------------------------ *
- * Settings
- * ------------------------------------------------------------------ */
-
 /** Only ever embed a plain http(s) DeepSeek URL. */
 function normalizeTarget(raw) {
   try {
@@ -63,10 +59,6 @@ async function readSettings() {
     return { ...DEFAULTS };
   }
 }
-
-/* ------------------------------------------------------------------ *
- * Frame loading
- * ------------------------------------------------------------------ */
 
 function showSplash(message) {
   splashHidden = false;
@@ -102,11 +94,6 @@ function clearLoadTimer() {
   }
 }
 
-/**
- * Point the frame at `url` and arm the recovery timer.
- * @param {string} url
- * @param {{soft?: boolean}} [opts] soft = keep the current pixels visible
- */
 function loadFrame(url, opts = {}) {
   const target = normalizeTarget(url);
   currentUrl = target;
@@ -159,10 +146,6 @@ el.frame.addEventListener('load', () => {
   hideSplash();
 });
 
-/* ------------------------------------------------------------------ *
- * Actions
- * ------------------------------------------------------------------ */
-
 async function runAction(action) {
   switch (action) {
     case 'reload':
@@ -212,10 +195,6 @@ document.addEventListener('click', (event) => {
   void runAction(trigger.dataset.act);
 });
 
-/* ------------------------------------------------------------------ *
- * Live settings
- * ------------------------------------------------------------------ */
-
 chrome.storage.onChanged.addListener((changes, area) => {
   if (area !== 'sync') return;
 
@@ -234,10 +213,6 @@ chrome.runtime.onMessage.addListener((message) => {
     loadFrame(currentUrl, { soft: true });
   }
 });
-
-/* ------------------------------------------------------------------ *
- * Boot
- * ------------------------------------------------------------------ */
 
 (async function boot() {
   const settings = await readSettings();

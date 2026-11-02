@@ -38,10 +38,6 @@
     ru: 'Русский',
   };
 
-  /* ------------------------------------------------------------------ *
-   * Styles (applied via adoptedStyleSheets — CSP-safe)
-   * ------------------------------------------------------------------ */
-
   const CSS = `
     :host {
       all: initial;
@@ -249,10 +245,6 @@
     }
   `;
 
-  /* ------------------------------------------------------------------ *
-   * State
-   * ------------------------------------------------------------------ */
-
   let host = null;
   let root = null;
   let btn = null;
@@ -272,10 +264,6 @@
       return false;
     }
   };
-
-  /* ------------------------------------------------------------------ *
-   * UI construction
-   * ------------------------------------------------------------------ */
 
   function buildUi() {
     if (host) return;
@@ -360,10 +348,6 @@
     });
   }
 
-  /* ------------------------------------------------------------------ *
-   * Positioning
-   * ------------------------------------------------------------------ */
-
   function placeButton(rect) {
     const size = 28;
     const gap = 7;
@@ -396,10 +380,6 @@
     card.style.left = Math.round(left) + 'px';
     card.style.top = Math.round(top) + 'px';
   }
-
-  /* ------------------------------------------------------------------ *
-   * Card rendering
-   * ------------------------------------------------------------------ */
 
   function showLoading(target) {
     lastResult = null;
@@ -484,10 +464,6 @@
     }
   }
 
-  /* ------------------------------------------------------------------ *
-   * Translation
-   * ------------------------------------------------------------------ */
-
   function errorMessageFor(code, fallback) {
     switch (code) {
       case 'need-setup':
@@ -560,16 +536,11 @@
     if (lastAnchor) placeCard(lastAnchor);
   }
 
-  /** The button carries the anchor position for the card. */
   function btnRectAnchor() {
     if (!btn || btn.hidden) return lastAnchor || { left: 40, top: 40, bottom: 40, width: 0 };
     const r = btn.getBoundingClientRect();
     return { left: r.left, top: r.top, bottom: r.bottom, width: r.width, height: r.height };
   }
-
-  /* ------------------------------------------------------------------ *
-   * Selection detection
-   * ------------------------------------------------------------------ */
 
   const SKIP_SELECTOR = 'input, textarea, select, [contenteditable=""], [contenteditable="true"]';
 
@@ -624,10 +595,6 @@
     placeButton(rect);
     btn.hidden = false;
   }
-
-  /* ------------------------------------------------------------------ *
-   * Events
-   * ------------------------------------------------------------------ */
 
   let scheduled = false;
 
@@ -696,10 +663,6 @@
   );
 
   window.addEventListener('blur', hideButton, { passive: true });
-
-  /* ------------------------------------------------------------------ *
-   * Settings
-   * ------------------------------------------------------------------ */
 
   async function loadSettings() {
     if (!isAlive()) return;

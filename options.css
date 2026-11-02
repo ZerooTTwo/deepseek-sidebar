@@ -53,8 +53,6 @@ body {
   margin: 0 auto;
 }
 
-/* -------------------------------- hero -------------------------------- */
-
 .hero {
   display: flex;
   align-items: center;
@@ -80,8 +78,6 @@ body {
   color: var(--fg-muted);
 }
 
-/* ------------------------------ notice -------------------------------- */
-
 .notice {
   display: flex;
   flex-direction: column;
@@ -96,8 +92,6 @@ body {
 
 .notice[hidden] { display: none; }
 .notice span { color: var(--fg-muted); }
-
-/* ------------------------------- cards -------------------------------- */
 
 .stack {
   display: flex;
@@ -133,8 +127,6 @@ body {
   font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
   font-size: 11.5px;
 }
-
-/* ------------------------------ choices ------------------------------- */
 
 .choices {
   display: grid;
@@ -178,8 +170,6 @@ body {
   font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
 }
 
-/* ------------------------------- fields ------------------------------- */
-
 .field { margin-top: 10px; }
 
 .field[hidden] { display: none; }
@@ -211,8 +201,6 @@ body {
 }
 
 .field__error[hidden] { display: none; }
-
-/* ------------------------------- switch ------------------------------- */
 
 .switch {
   display: flex;
@@ -263,8 +251,6 @@ body {
   outline-offset: 2px;
 }
 
-/* ------------------------------- checks ------------------------------- */
-
 .checks {
   list-style: none;
   margin: 0 0 16px;
@@ -303,8 +289,6 @@ body {
 
 .check__value { color: var(--fg); }
 
-/* -------------------------------- buttons ----------------------------- */
-
 .row { display: flex; flex-wrap: wrap; gap: 8px; }
 
 .btn {
@@ -337,8 +321,6 @@ body {
   outline-offset: 2px;
 }
 
-/* -------------------------------- footer ------------------------------ */
-
 .footer {
   margin-top: 22px;
   display: flex;
@@ -353,8 +335,6 @@ body {
   font-size: 11.5px;
   color: var(--fg-muted);
 }
-
-/* --------------------------- field primitives -------------------------- */
 
 .field-label {
   display: block;
@@ -459,8 +439,6 @@ body {
 
 .test-result.is-ok { color: var(--ok); }
 .test-result.is-bad { color: var(--bad); }
-
-/* -------------------------------- toast ------------------------------- */
 
 .toast {
   position: fixed;
