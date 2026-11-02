@@ -1,4 +1,4 @@
-# DeepSeek Sidebar · DeepSeek 侧边栏助手
+﻿# DeepSeek Sidebar · DeepSeek 侧边栏助手
 
 在浏览器右侧边栏直接使用 **DeepSeek 官方网页版**（`chat.deepseek.com`），
 不切换标签页、不离开当前页面；另外支持在任意网页上**划词翻译**。
@@ -160,7 +160,7 @@ PASS  popover shows the translation     [It's a nice day, let's go for a walk in
 PASS  invalid API key surfaces a clear error
 PASS  upstream still sends frame-ancestors (rule is what unblocks it)
 ...
-21 assertions passed
+22 assertions passed
 ```
 
 划词翻译那几条是真跑出来的：本地页面里 `今天天气很好，我们一起去公园散步吧。`
@@ -231,7 +231,7 @@ PDF 内嵌查看器和部分 `file://` 页面不允许注入内容脚本，这�
 作者负责提出需求、确定技术取舍并验收。
 
 需要说明的是，README 中引用的实测数据——`frame-ancestors 'none'` 响应头、
-DNR 规则实际生效、划词翻译浮窗的真实输出、`21 assertions passed`——都来自运行时真实抓取，
+DNR 规则实际生效、划词翻译浮窗的真实输出、`22 assertions passed`——都来自运行时真实抓取，
 不是模型臆测的结果；`dev/verify.js` 与 `dev/e2e-test.js` 都可以自行复跑核对。
 
 由于存在 AI 生成成分，代码可能仍有未被测试覆盖的边界情况。使用前建议通读源码，
