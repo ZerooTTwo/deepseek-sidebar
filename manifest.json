@@ -1,0 +1,66 @@
+{
+  "manifest_version": 3,
+  "name": "DeepSeek Sidebar - DeepSeek 侧边栏助手",
+  "short_name": "DeepSeek Sidebar",
+  "version": "1.1.0",
+  "description": "在任何网页右侧边栏中直接使用 DeepSeek 官方网页版，无需切换标签页，专注对话不打断。",
+  "minimum_chrome_version": "116",
+  "icons": {
+    "16": "icons/icon16.png",
+    "32": "icons/icon32.png",
+    "48": "icons/icon48.png",
+    "128": "icons/icon128.png"
+  },
+  "action": {
+    "default_title": "打开 DeepSeek 侧边栏",
+    "default_icon": {
+      "16": "icons/icon16.png",
+      "32": "icons/icon32.png",
+      "48": "icons/icon48.png",
+      "128": "icons/icon128.png"
+    }
+  },
+  "background": {
+    "service_worker": "background.js"
+  },
+  "side_panel": {
+    "default_path": "sidepanel.html",
+    "openPanelOnActionClick": true
+  },
+  "options_ui": {
+    "page": "options.html",
+    "open_in_tab": true
+  },
+  "permissions": [
+    "sidePanel",
+    "declarativeNetRequest",
+    "storage",
+    "contextMenus"
+  ],
+  "host_permissions": [
+    "*://*.deepseek.com/*",
+    "https://api.mymemory.translated.net/*"
+  ],
+  "content_scripts": [
+    {
+      "matches": [
+        "http://*/*",
+        "https://*/*"
+      ],
+      "js": [
+        "content/selection.js"
+      ],
+      "all_frames": true,
+      "run_at": "document_idle"
+    }
+  ],
+  "declarative_net_request": {
+    "rule_resources": [
+      {
+        "id": "ds_frame_headers",
+        "enabled": true,
+        "path": "rules/frame.json"
+      }
+    ]
+  }
+}

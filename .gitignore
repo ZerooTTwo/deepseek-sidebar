@@ -1,0 +1,21 @@
+# Chrome / Edge regenerate this inside the unpacked extension directory
+_metadata/
+
+# Local test profiles created by dev/e2e-test.js
+.test-profile/
+.probe-profile/
+
+# Logs
+*.log
+
+# Editor / OS noise
+.DS_Store
+Thumbs.db
+.idea/
+.vscode/
+
+# Dependencies (this project has none, kept as a guard)
+node_modules/
+
+# Packaged artifacts are produced by dev/pack.js
+*.zip

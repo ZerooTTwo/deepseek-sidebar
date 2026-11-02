@@ -1,0 +1,6 @@
+# Keep line endings stable across platforms (sources are authored with LF)
+* text=auto eol=lf
+
+# Binary assets
+*.png binary
+*.zip binary

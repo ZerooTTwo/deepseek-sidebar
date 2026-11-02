@@ -1,0 +1,175 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>DeepSeek 侧边栏 · 设置</title>
+<link rel="stylesheet" href="options.css" />
+</head>
+<body>
+  <div class="page">
+    <header class="hero">
+      <img class="hero__logo" src="icons/icon128.png" alt="" width="52" height="52" />
+      <div class="hero__meta">
+        <h1 class="hero__title">DeepSeek 侧边栏</h1>
+        <p class="hero__sub">在任何网页右侧使用 DeepSeek 官方网页版 · v<span id="version">—</span></p>
+      </div>
+    </header>
+
+    <div id="welcome" class="notice" hidden>
+      <strong>安装成功 🎉</strong>
+      <span>点击浏览器工具栏里的 DeepSeek 图标，即可在任意网页右侧打开侧边栏。</span>
+    </div>
+
+    <main class="stack">
+      <!-- ---------------- 首页地址 ---------------- -->
+      <section class="card">
+        <h2 class="card__title">侧边栏加载的页面</h2>
+        <p class="card__hint">默认加载 DeepSeek 官方对话页，登录状态与浏览器中一致。</p>
+
+        <div class="choices" role="radiogroup" aria-label="侧边栏加载的页面">
+          <label class="choice">
+            <input type="radio" name="landing" value="https://chat.deepseek.com/" />
+            <span class="choice__body">
+              <span class="choice__name">DeepSeek 对话</span>
+              <span class="choice__url">chat.deepseek.com</span>
+            </span>
+          </label>
+          <label class="choice">
+            <input type="radio" name="landing" value="https://www.deepseek.com/" />
+            <span class="choice__body">
+              <span class="choice__name">DeepSeek 官网</span>
+              <span class="choice__url">www.deepseek.com</span>
+            </span>
+          </label>
+          <label class="choice">
+            <input type="radio" name="landing" value="custom" />
+            <span class="choice__body">
+              <span class="choice__name">自定义地址</span>
+              <span class="choice__url">仅支持 deepseek.com 域名</span>
+            </span>
+          </label>
+        </div>
+
+        <div class="field" id="custom-field" hidden>
+          <input id="custom-url" type="url" inputmode="url" spellcheck="false"
+                 placeholder="https://chat.deepseek.com/" autocomplete="off" />
+          <p class="field__error" id="custom-error" hidden>请输入有效的 deepseek.com 地址</p>
+        </div>
+      </section>
+
+      <!-- ---------------- 外观 ---------------- -->
+      <section class="card">
+        <h2 class="card__title">外观与交互</h2>
+
+        <label class="switch">
+          <span class="switch__text">
+            <span class="switch__name">显示悬浮工具条</span>
+            <span class="switch__desc">侧边栏右下角的刷新 / 新标签页 / 独立窗口按钮。</span>
+          </span>
+          <input id="show-toolbar" type="checkbox" />
+        </label>
+      </section>
+
+      <!-- ---------------- 划词翻译 ---------------- -->
+      <section class="card">
+        <h2 class="card__title">划词翻译</h2>
+        <p class="card__hint">
+          在任意网页选中文字，旁边会出现一个「译」按钮，点击即在浮窗里显示译文。
+          只有点按钮时才会把文本发出去，单纯选中不会触发任何请求。
+        </p>
+
+        <label class="switch">
+          <span class="switch__text">
+            <span class="switch__name">启用划词翻译</span>
+            <span class="switch__desc">关闭后选中文字不再显示翻译按钮。</span>
+          </span>
+          <input id="translate-enabled" type="checkbox" />
+        </label>
+
+        <div class="row-inline">
+          <label class="field-label" for="target-lang">目标语言</label>
+          <select id="target-lang" class="select">
+            <option value="auto">自动（中文→英文，其他→中文）</option>
+            <option value="zh-CN">简体中文</option>
+            <option value="en">English</option>
+            <option value="ja">日本語</option>
+            <option value="ko">한국어</option>
+            <option value="fr">Français</option>
+            <option value="de">Deutsch</option>
+            <option value="es">Español</option>
+            <option value="ru">Русский</option>
+          </select>
+        </div>
+
+        <hr class="rule" />
+
+        <label class="field-label" for="api-key">DeepSeek API Key</label>
+        <p class="field-hint">
+          保存在本机浏览器（<code>storage.local</code>，不参与同步），只用于向
+          <code>api.deepseek.com</code> 发起翻译请求。
+          <a href="https://platform.deepseek.com/api_keys" target="_blank" rel="noreferrer">去获取 API Key</a>
+        </p>
+        <div class="row-inline">
+          <input id="api-key" class="input" type="password" spellcheck="false" autocomplete="off"
+                 placeholder="sk-..." />
+          <button class="btn" type="button" id="toggle-key">显示</button>
+        </div>
+
+        <label class="switch switch--spaced">
+          <span class="switch__text">
+            <span class="switch__name">未配置 Key 时使用免费翻译接口</span>
+            <span class="switch__desc">
+              经由 MyMemory 公共接口。选中文本会发送给第三方，单次上限约 500 字符，
+              质量与隐私都不如 DeepSeek 官方接口，默认关闭。
+            </span>
+          </span>
+          <input id="allow-free" type="checkbox" />
+        </label>
+
+        <div class="row row--spaced">
+          <button class="btn btn--primary" type="button" id="test-translate">保存并测试翻译</button>
+          <span class="test-result" id="test-result" aria-live="polite"></span>
+        </div>
+      </section>
+
+      <!-- ---------------- 诊断 ---------------- -->
+      <section class="card">
+        <h2 class="card__title">运行状态</h2>
+        <p class="card__hint">
+          DeepSeek 官方页面通过 <code>frame-ancestors 'none'</code> 禁止被嵌入。
+          本扩展用 <code>declarativeNetRequest</code> 规则在「侧边栏子框架」请求中移除该响应头，
+          普通标签页访问 DeepSeek 时策略保持不变。
+        </p>
+
+        <ul class="checks" id="checks">
+          <li class="check" data-key="rules"><span class="check__dot"></span><span class="check__label">嵌入规则</span><span class="check__value">检测中…</span></li>
+          <li class="check" data-key="perm"><span class="check__dot"></span><span class="check__label">站点权限</span><span class="check__value">检测中…</span></li>
+          <li class="check" data-key="engine"><span class="check__dot"></span><span class="check__label">翻译引擎</span><span class="check__value">检测中…</span></li>
+          <li class="check" data-key="panel"><span class="check__dot"></span><span class="check__label">侧边栏 API</span><span class="check__value">检测中…</span></li>
+          <li class="check" data-key="browser"><span class="check__dot"></span><span class="check__label">浏览器版本</span><span class="check__value">检测中…</span></li>
+        </ul>
+
+        <div class="row">
+          <button class="btn btn--primary" type="button" id="test-panel">展开侧边栏试试</button>
+          <button class="btn" type="button" id="recheck">重新检测</button>
+        </div>
+      </section>
+    </main>
+
+    <footer class="footer">
+      <div class="footer__actions">
+        <button class="btn btn--primary" type="button" id="save">保存设置</button>
+        <button class="btn" type="button" id="reset">恢复默认</button>
+      </div>
+      <p class="footer__note">
+        本扩展只是 DeepSeek 官方网页版的容器，不修改、不代理任何对话内容。
+      </p>
+    </footer>
+  </div>
+
+  <div id="toast" class="toast" role="status" aria-live="polite"></div>
+
+  <script src="options.js"></script>
+</body>
+</html>
