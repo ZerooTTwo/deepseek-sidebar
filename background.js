@@ -2,8 +2,7 @@
  * DeepSeek Sidebar — background service worker
  *
  * Responsibilities:
- *  1. Make clicking the toolbar icon open the side panel (same UX as the
- *     reference Kimi sidebar extension).
+ *  1. Make clicking the toolbar icon open the side panel directly.
  *  2. Register the right-click menu entry that opens the panel from any page.
  *  3. Serve 划词翻译 requests from the content script: translate selected text
  *     either with the DeepSeek API (user's own key) or, if explicitly allowed,

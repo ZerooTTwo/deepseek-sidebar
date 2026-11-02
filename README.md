@@ -3,16 +3,14 @@
 在浏览器右侧边栏直接使用 **DeepSeek 官方网页版**（`chat.deepseek.com`），
 不切换标签页、不离开当前页面；另外支持在任意网页上**划词翻译**。
 
-仿照 *Kimi Sidebar* 的实现思路（Manifest V3 + `chrome.sidePanel` + 全屏 iframe），
-并针对 DeepSeek 官方的嵌入限制做了必要处理。
+基于 Manifest V3 + `chrome.sidePanel` + 全屏 iframe，把 DeepSeek 官方页面装进侧边栏，
+并针对官方的嵌入限制做了必要处理。
 
 ---
 
-## 为什么不能直接照搬 Kimi 的做法
+## 为什么不能直接用一个 `<iframe>`
 
-Kimi 的侧边栏只有一句核心代码：把 `https://kimi.moonshot.cn/` 塞进一个 `<iframe>`。
-
-DeepSeek 官方页面不允许这样：
+把官方页面塞进 `<iframe>` 是最直觉的做法，但 DeepSeek 不允许：
 
 ```http
 $ curl -I https://chat.deepseek.com/
@@ -177,8 +175,8 @@ PASS  upstream still sends frame-ancestors (rule is what unblocks it)
 密码登录 使用 Apple 账号登录 微信扫码登录
 ```
 
-这同时证明了一件事：如果只是照搬 Kimi 那句 `<iframe src=...>`，这里会得到 `refused to connect`；
-真正生效的是 `rules/frame.json`。
+这同时证明了一件事：如果只是简单地写一句 `<iframe src="https://chat.deepseek.com/">`，
+这里拿到的会是 `refused to connect`；真正让它生效的是 `rules/frame.json`。
 
 ---
 
@@ -212,23 +210,6 @@ PDF 内嵌查看器和部分 `file://` 页面不允许注入内容脚本，这�
 **是否会看到或上传我的对话内容？**
 不会。扩展不注入任何脚本到 DeepSeek 页面、不读取 iframe 内容
 （跨域 iframe 本身也无法读取），不做任何网络代理。
-
----
-
-## 与 Kimi 版本的差异
-
-| | Kimi Sidebar | 本扩展 |
-| --- | --- | --- |
-| 框架 | React + webpack（`*bundle.js`，约 145 KB × 5 份重复） | 原生 ES2020 + 原生 DOM（无构建步骤） |
-| 嵌入方式 | 直接 iframe（Kimi 无嵌入限制） | iframe + DNR 规则移除 `frame-ancestors` |
-| 划词翻译 | 无 | 有，双引擎 + Shadow DOM 浮窗 |
-| 失败处理 | 无 | 加载超时检测 + 恢复面板 |
-| 设置页 | 无实际选项 | 首页地址、工具条开关、翻译引擎、五项自检 |
-| 右键菜单 | 无 | 有 |
-| 图标 | 自带 PNG | 官方 favicon 派生（16/32/48/128） |
-
-图标与品牌标识归 DeepSeek（杭州深度求索）所有，本扩展为非官方个人工具，
-仅作为官方网页版的容器使用。
 
 ---
 

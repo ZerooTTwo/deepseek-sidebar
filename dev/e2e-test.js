@@ -627,9 +627,8 @@ p{padding:4px}</style></head><body>
     panelSession,
   );
 
-  /* The reference Kimi extension's plain-iframe trick would fail here; prove it
-   * by confirming the CSP header is really present upstream and only our
-   * sub_frame rule removes it. */
+  /* A plain <iframe> would fail here; prove it by confirming the CSP header is
+   * really present upstream and only our sub_frame rule removes it. */
   const cspProbe = await fetch('https://chat.deepseek.com/', { method: 'HEAD' }).then(
     (r) => r.headers.get('content-security-policy') || '',
     () => '',
